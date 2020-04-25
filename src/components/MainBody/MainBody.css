@@ -1,0 +1,65 @@
+.main-body {
+  min-height: 200vh;
+  border-radius: 40px 40px 0px 0px;
+  position: absolute;
+  top: 60vh;
+  left: 0;
+  box-shadow: 0px -1px 3px rgba(0, 0, 0, 0.251);
+  width: 100%;
+}
+.segment {
+  padding: 1.5em 1em 1em 0em !important;
+  background: #fff;
+  border-radius: 40px 40px 0px 0px;
+}
+
+.segment-button {
+  color: #bebebe;
+  --indicator-box-shadow: none;
+  font-size: 0.8em;
+  border: none !important;
+  --border-color: transparent;
+}
+.segment-button.active {
+  color: #454545;
+}
+
+.slider {
+  height: 50vh;
+}
+.swiper-slide {
+  display: block;
+  text-align: left;
+  padding: 1em;
+  padding: 0;
+}
+.weather-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0.8em 0em;
+  color: #a7a7a7;
+  border-radius: 20px;
+}
+.weather-card-dark {
+  color: #fff;
+  background-color: #393c49 !important;
+}
+
+.weather-card .time {
+  font-size: 1em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.weather-card img {
+  width: 31px;
+  height: 31px;
+  margin-bottom: 10px;
+}
+.segment {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0rem;
+  z-index: 2;
+}

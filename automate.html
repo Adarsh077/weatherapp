@@ -1,0 +1,63 @@
+<!-- This html was written to generate keyfamres styles which are located in /src/components/TempMetaData/TempMetaData.css -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const deg = 360;
+      let per = 3.6;
+      const keyFrame = (i, degright, degleft = 0) => {
+        return `
+            @keyframes loading-right-${i} { </br>
+              0% { </br>
+                -webkit-transform: rotate(0deg); </br>
+                transform: rotate(0deg); </br>
+              }</br>
+              100% {</br>
+                -webkit-transform: rotate(${degright}deg);</br>
+                transform: rotate(${degright}deg);</br>
+              }</br>
+            }
+          </br>
+            @keyframes loading-left-${i} {</br>
+              0% {</br>
+                -webkit-transform: rotate(0deg);</br>
+                transform: rotate(0deg);</br>
+              }</br>
+              100% {</br>
+                -webkit-transform: rotate(${degleft}deg);</br>
+                transform: rotate(${degleft}deg);</br>
+              }</br>
+            }</br>
+            </br>
+        `;
+      };
+      for (let i = 0; i < 101; i++) {
+        if (i < 51) {
+          document.write(keyFrame(i, i * 3.6));
+        } else {
+          document.write(keyFrame(i, 180, (i - 50) * 3.6));
+        }
+      }
+    </script>
+    <script>
+      for (let i = 0; i < 101; i++) {
+        document.write(
+          `</br>
+          .progress-right-${i} .progress-bar {</br>
+              animation: loading-right-${i} 1.8s linear forwards;</br>
+            }</br>
+            .progress-left-${i} .progress-bar {</br>
+              animation: loading-left-${i} 1.8s linear forwards;</br>
+            }</br>
+          `
+        );
+      }
+    </script>
+  </body>
+</html>
