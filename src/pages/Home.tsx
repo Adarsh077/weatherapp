@@ -15,14 +15,26 @@ const { StatusBar } = Plugins;
 class Page extends Component<{}, { data: API }> {
   constructor(props: Readonly<{}>) {
     super(props);
+
+    /* Filter Hourly Data till 23:00 and for tomorrow */
+    let idx = Data.hourly.findIndex(
+      (hr) => new Date(hr.dt * 1000).getHours() === 23
+    );
+    let tomorrow = Data.hourly.splice(idx + 1, Data.hourly.length);
+    idx = tomorrow.findIndex((hr) => new Date(hr.dt * 1000).getHours() === 23);
+    tomorrow.splice(idx + 1, tomorrow.length);
+
+    Data.daily.shift();
+
     this.state = {
-      data: Data,
+      data: { ...Data, tomorrow },
     };
 
     // Make status bar dark themed.
     StatusBar.setStyle({
       style: StatusBarStyle.Dark,
     });
+    StatusBar.setBackgroundColor({ color: "#0000" });
   }
 
   render() {
@@ -32,8 +44,12 @@ class Page extends Component<{}, { data: API }> {
       <IonPage>
         <IonContent>
           <div
-            className="container-fluid p-0 bg-dark"
-            style={{ height: "100vh", position: "relative" }}
+            className="container-fluid p-0"
+            style={{
+              height: "100vh",
+              position: "relative",
+              backgroundColor: "#292b33",
+            }}
           >
             <Hero timezone={timezone} current={current} />
             <TempMetaData

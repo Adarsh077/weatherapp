@@ -18,7 +18,7 @@
 }
 
 .temprature .degree {
-  font-size: 3.8em;
+  font-size: 4em;
   text-align: center;
   color: #fff;
 }
@@ -26,7 +26,7 @@
 .temprature .meta-data {
   display: flex;
   color: #edeff3;
-  font-size: 0.75em;
+  font-size: 0.85em;
   justify-content: center;
 }
 

@@ -8,6 +8,7 @@ interface API {
   timezone: string;
   current: CurrentTemp;
   hourly: Array<HourlyTemp>;
+  tomorrow: Array<HourlyTemp>;
   daily: Array<DailyTemp>;
 }
 

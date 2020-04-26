@@ -34,7 +34,7 @@ export default class extends Component<Props, { selectedTab: number }> {
 
   render() {
     const { selectedTab } = this.state;
-    const { hourly } = this.props.data;
+    const { hourly, current, tomorrow, daily } = this.props.data;
 
     return (
       <div className="main-body bg-white">
@@ -46,16 +46,24 @@ export default class extends Component<Props, { selectedTab: number }> {
         <IonSlides
           className="slider"
           ref={this.sliderRef}
-          onIonSlideDidChange={this.handleTabSwitch}
+          onIonSlideWillChange={this.handleTabSwitch}
         >
           <IonSlide>
-            <Today hourly={hourly} />
+            <Today
+              hourly={hourly}
+              sunrise={current.sunrise}
+              sunset={current.sunset}
+            />
           </IonSlide>
           <IonSlide>
-            <Tomorrow />
+            <Tomorrow
+              tomorrow={tomorrow}
+              sunrise={daily[0].sunrise}
+              sunset={daily[0].sunset}
+            />
           </IonSlide>
           <IonSlide>
-            <Next7Day />
+            <Next7Day daily={daily} />
           </IonSlide>
         </IonSlides>
       </div>

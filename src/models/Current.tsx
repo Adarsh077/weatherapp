@@ -11,7 +11,6 @@ export default interface CurrentTemp {
   dew_point: number;
   uvi: number;
   clouds: number;
-  visibility: number;
   wind_speed: number;
   wind_deg: number;
   weather: Array<Weather>;

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import "./Hero.css";
 
-import Menu from "../../assets/icons/menu.svg";
-import Search from "../../assets/icons/search.svg";
-
 import CurrentTemp from "../../models/Current";
 
 interface Props {
@@ -12,7 +9,7 @@ interface Props {
 }
 
 const getDate = (date: any): string => {
-  date = new Date(date).toDateString().split("");
+  date = new Date(date * 1000).toDateString().split("");
   date.splice(10, 5);
   return date.join("");
 };
@@ -25,10 +22,17 @@ export default class Hero extends Component<Props> {
       <div className="temprature">
         {/* Header */}
         <div className="header ion-padding sticky-top">
-          <img src={Menu} alt="menu" className="img-fluid" />
+          <img
+            src="https://ionicassets.s3.ap-south-1.amazonaws.com/weatherappicons/menu.svg"
+            alt="menu"
+            className="img-fluid"
+          />
           <div>{timezone}</div>
           <div>
-            <img src={Search} alt="search" />
+            <img
+              src="https://ionicassets.s3.ap-south-1.amazonaws.com/weatherappicons/search.svg"
+              alt="search"
+            />
           </div>
         </div>
 

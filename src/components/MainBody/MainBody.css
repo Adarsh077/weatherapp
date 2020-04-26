@@ -1,5 +1,4 @@
 .main-body {
-  min-height: 200vh;
   border-radius: 40px 40px 0px 0px;
   position: absolute;
   top: 60vh;
@@ -24,9 +23,6 @@
   color: #454545;
 }
 
-.slider {
-  height: 50vh;
-}
 .swiper-slide {
   display: block;
   text-align: left;
@@ -40,7 +36,7 @@
   flex-direction: column;
   padding: 0.8em 0em;
   color: #a7a7a7;
-  border-radius: 20px;
+  border-radius: 15px;
 }
 .weather-card-dark {
   color: #fff;
@@ -62,4 +58,32 @@
   position: sticky;
   top: 0rem;
   z-index: 2;
+}
+
+.meta-data {
+  margin: 1rem 1.5rem 0 1.5rem !important;
+}
+
+.meta-card {
+  border-top: 0.5px solid #e8e8e8;
+}
+
+.meta-card .meta-card-left {
+  padding: 1.1em 0 1.1em 1.25em;
+  border-right: 0.5px solid #e8e8e8;
+}
+
+.meta-card .meta-card-right {
+  padding: 1.1em 0 1.1em 1.8em;
+}
+
+.meta-card .title {
+  font-size: 0.75em;
+  text-transform: uppercase;
+  color: #afaeb0;
+}
+
+.meta-card .text {
+  font-size: 1.1em;
+  margin-top: 7.5px;
 }
