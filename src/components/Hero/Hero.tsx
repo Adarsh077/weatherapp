@@ -22,18 +22,7 @@ export default class Hero extends Component<Props> {
       <div className="temprature">
         {/* Header */}
         <div className="header ion-padding sticky-top">
-          <img
-            src="https://ionicassets.s3.ap-south-1.amazonaws.com/weatherappicons/menu.svg"
-            alt="menu"
-            className="img-fluid"
-          />
           <div>{timezone}</div>
-          <div>
-            <img
-              src="https://ionicassets.s3.ap-south-1.amazonaws.com/weatherappicons/search.svg"
-              alt="search"
-            />
-          </div>
         </div>
 
         {/* Hero Main */}

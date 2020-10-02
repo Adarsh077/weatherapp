@@ -8,12 +8,11 @@ interface Props {
   changeActiveIndex: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
-const iconBase =
-  "https://ionicassets.s3.ap-south-1.amazonaws.com/weatherappicons/";
+const iconBase = "assets/icons/";
 
 export default (props: Props) => {
   let iconUrl = iconBase + props.icon.slice(0, 2);
-  iconUrl += props.isDark ? "n.svg" : "d.svg";
+  iconUrl += props.isDark ? "d.svg" : "n.svg";
 
   return (
     <div

@@ -1,32 +1,42 @@
 import { IonContent, IonPage } from "@ionic/react";
 import React, { Component } from "react";
 import { Plugins, StatusBarStyle } from "@capacitor/core";
+import Axios from "axios";
 
 import "./Home.css";
 import MainBody from "../components/MainBody/MainBody";
 import Hero from "../components/Hero/Hero";
+import LoadingScreen from "../components/LoadingScreen/LoadingScreen";
 import TempMetaData from "../components/TempMetaData/TempMetaData";
 
 import Data from "../components/Data";
 import API from "../models/API";
+import Hour from "../models/Hourly";
 
-const { StatusBar } = Plugins;
+const { StatusBar, Geolocation } = Plugins;
 
-class Page extends Component<{}, { data: API }> {
-  constructor(props: Readonly<{}>) {
+interface State {
+  isLoading: Boolean;
+  data: API;
+}
+
+class Page extends Component<{}, State> {
+  constructor(props: any) {
     super(props);
 
     /* Filter Hourly Data till 23:00 and for tomorrow */
     let idx = Data.hourly.findIndex(
-      (hr) => new Date(hr.dt * 1000).getHours() === 23
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
     );
     let tomorrow = Data.hourly.splice(idx + 1, Data.hourly.length);
-    idx = tomorrow.findIndex((hr) => new Date(hr.dt * 1000).getHours() === 23);
+    idx = tomorrow.findIndex(
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
+    );
     tomorrow.splice(idx + 1, tomorrow.length);
 
     Data.daily.shift();
-
     this.state = {
+      isLoading: true,
       data: { ...Data, tomorrow },
     };
 
@@ -36,29 +46,69 @@ class Page extends Component<{}, { data: API }> {
     });
     StatusBar.setBackgroundColor({ color: "#0000" });
   }
+  async getCurrentPosition() {
+    try {
+      const coordinates = await Geolocation.getCurrentPosition();
+      return {
+        long: coordinates.coords.longitude,
+        lat: coordinates.coords.latitude,
+      };
+    } catch (e) {
+      alert(JSON.stringify(e));
+      return { long: 0, lat: 0 };
+    }
+  }
+
+  async componentDidMount() {
+    const position = await this.getCurrentPosition();
+    alert(JSON.stringify(position));
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${position.lat}&lon=${position.long}&appid=b6c09e7b9410a1efbfb9dbe93b297cb5&units=metric`;
+    const { data } = await Axios.get(url);
+
+    alert(JSON.stringify(data));
+    /* Filter Hourly Data till 23:00 and for tomorrow */
+    let idx = data.hourly.findIndex(
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
+    );
+    let tomorrow = data.hourly.splice(idx + 1, data.hourly.length);
+    idx = tomorrow.findIndex(
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
+    );
+    tomorrow.splice(idx + 1, tomorrow.length);
+
+    data.daily.shift();
+
+    this.setState({ data: { ...data, tomorrow }, isLoading: false });
+  }
 
   render() {
-    const { timezone, current } = this.state.data;
-
+    const { isLoading } = this.state;
     return (
       <IonPage>
         <IonContent>
-          <div
-            className="container-fluid p-0"
-            style={{
-              height: "100vh",
-              position: "relative",
-              backgroundColor: "#292b33",
-            }}
-          >
-            <Hero timezone={timezone} current={current} />
-            <TempMetaData
-              clouds={current.clouds}
-              humidity={current.humidity}
-              uvi={current.uvi}
-            />
-            <MainBody data={this.state.data} />
-          </div>
+          {isLoading ? (
+            <LoadingScreen />
+          ) : (
+            <div
+              className="container-fluid p-0"
+              style={{
+                height: "100vh",
+                position: "relative",
+                backgroundColor: "#292b33",
+              }}
+            >
+              <Hero
+                timezone={this.state.data.timezone}
+                current={this.state.data.current}
+              />
+              <TempMetaData
+                clouds={this.state.data.current.clouds}
+                humidity={this.state.data.current.humidity}
+                uvi={this.state.data.current.uvi}
+              />
+              <MainBody data={this.state.data} />
+            </div>
+          )}
         </IonContent>
       </IonPage>
     );
