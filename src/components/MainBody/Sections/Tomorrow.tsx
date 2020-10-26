@@ -26,7 +26,7 @@ const options = {
 
 const getDate = (milliseconds: number) => {
   const date = new Date(milliseconds * 1000);
-  return date.getHours() + ":" + date.getMinutes();
+  return date.getHours() + ":" + `0${date.getMinutes()}`.slice(-2);
 };
 
 export default class extends Component<Props, State> {

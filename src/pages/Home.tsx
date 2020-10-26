@@ -13,7 +13,7 @@ import Data from "../components/Data";
 import API from "../models/API";
 import Hour from "../models/Hourly";
 
-const { StatusBar, Geolocation } = Plugins;
+const { StatusBar, Geolocation, App } = Plugins;
 
 interface State {
   isLoading: Boolean;
@@ -54,18 +54,27 @@ class Page extends Component<{}, State> {
         lat: coordinates.coords.latitude,
       };
     } catch (e) {
-      alert(JSON.stringify(e));
+      if (e.message && e.message === "location unavailable") {
+        alert(JSON.stringify(e));
+        App.exitApp();
+      } else if (e.message && e.message === "User denied location permission") {
+        alert(
+          "Please provide location permission. Enable from Settings->Apps->WeatherApp->Permissions"
+        );
+        App.exitApp();
+      } else {
+        alert(JSON.stringify(e));
+        App.exitApp();
+      }
       return { long: 0, lat: 0 };
     }
   }
 
   async componentDidMount() {
     const position = await this.getCurrentPosition();
-    alert(JSON.stringify(position));
     const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${position.lat}&lon=${position.long}&appid=b6c09e7b9410a1efbfb9dbe93b297cb5&units=metric`;
     const { data } = await Axios.get(url);
 
-    alert(JSON.stringify(data));
     /* Filter Hourly Data till 23:00 and for tomorrow */
     let idx = data.hourly.findIndex(
       (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23

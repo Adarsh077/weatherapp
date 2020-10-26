@@ -28,7 +28,7 @@ export default class Hero extends Component<Props> {
         {/* Hero Main */}
 
         <div className="hero-data h-100">
-          <div className="degree">81&#730;</div>
+          <div className="degree">{current.temp}&#730;</div>
           <div className="meta-data">
             <p>{current.weather[0].main}</p>
             <p className="date">{getDate(current.dt)}</p>

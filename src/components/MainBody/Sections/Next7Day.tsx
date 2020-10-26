@@ -29,7 +29,7 @@ const getDay = (milliseconds: number) => {
 
 const getDate = (milliseconds: number) => {
   const date = new Date(milliseconds * 1000);
-  return date.getHours() + ":" + (date.getMinutes() + "0").slice(0, 2);
+  return date.getHours() + ":" + `0${date.getMinutes()}`.slice(-2);
 };
 
 export default class extends Component<Props, State> {
