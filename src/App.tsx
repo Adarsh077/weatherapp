@@ -22,8 +22,16 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import { Capacitor, Plugins } from "@capacitor/core";
 
 const App: React.FC = () => {
+  React.useEffect(() => {
+    if (Capacitor.isNative) {
+      Plugins.App.addListener("backButton", () => {
+        if (window.location.pathname === "/") Plugins.App.exitApp();
+      });
+    }
+  }, []);
   return (
     <IonApp>
       <Home />

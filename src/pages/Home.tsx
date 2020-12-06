@@ -13,7 +13,7 @@ import Data from "../components/Data";
 import API from "../models/API";
 import Hour from "../models/Hourly";
 
-const { StatusBar, Geolocation, App, LocalNotifications } = Plugins;
+const { StatusBar, Geolocation, App } = Plugins;
 
 interface State {
   isLoading: Boolean;
@@ -73,36 +73,23 @@ class Page extends Component<{}, State> {
   }
 
   async componentDidMount() {
-    const notifs = await LocalNotifications.schedule({
-      notifications: [
-        {
-          title: "Title",
-          body: "Body",
-          id: 1,
-          schedule: { at: new Date(Date.now() + 1000 * 5) },
-          smallIcon: "file://icon/not.png",
-        },
-      ],
-    });
-    console.log("scheduled notifications", notifs);
+    const position = await this.getCurrentPosition();
+    const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${position.lat}&lon=${position.long}&appid=b6c09e7b9410a1efbfb9dbe93b297cb5&units=metric`;
+    const { data } = await Axios.get(url);
 
-    // const position = await this.getCurrentPosition();
-    // const url = `https://api.openweathermap.org/data/2.5/onecall?lat=${position.lat}&lon=${position.long}&appid=b6c09e7b9410a1efbfb9dbe93b297cb5&units=metric`;
-    // const { data } = await Axios.get(url);
+    /* Filter Hourly Data till 23:00 and for tomorrow */
+    let idx = data.hourly.findIndex(
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
+    );
+    let tomorrow = data.hourly.splice(idx + 1, data.hourly.length);
+    idx = tomorrow.findIndex(
+      (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
+    );
+    tomorrow.splice(idx + 1, tomorrow.length);
 
-    // /* Filter Hourly Data till 23:00 and for tomorrow */
-    // let idx = data.hourly.findIndex(
-    //   (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
-    // );
-    // let tomorrow = data.hourly.splice(idx + 1, data.hourly.length);
-    // idx = tomorrow.findIndex(
-    //   (hr: Hour) => new Date(hr.dt * 1000).getHours() === 23
-    // );
-    // tomorrow.splice(idx + 1, tomorrow.length);
+    data.daily.shift();
 
-    // data.daily.shift();
-
-    // this.setState({ data: { ...data, tomorrow }, isLoading: false });
+    this.setState({ data: { ...data, tomorrow }, isLoading: false });
   }
 
   render() {
